@@ -1,0 +1,990 @@
+{
+	"info": {
+		"_postman_id": "09917bd0-942d-b8e4-36f5-a9b49faa4cda",
+		"name": "DCG",
+		"description": "Dining Club Group APIs.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Restaurant API",
+			"description": "",
+			"item": [
+				{
+					"name": "V1",
+					"description": "",
+					"item": [
+						{
+							"name": "Brand",
+							"description": "",
+							"item": [
+								{
+									"name": "List Brands",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"brandId\", jsonData[0].id);",
+													"}",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/brand",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"brand"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Brand",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/brand/{{brandId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"brand",
+												"{{brandId}}"
+											]
+										},
+										"description": "Requires `brandId` variable. Run `Restaurant API -> V1 -> Brand -> List Brands` to generate."
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Chain",
+							"description": "",
+							"item": [
+								{
+									"name": "List Chains",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"chainId\", jsonData[0].id);",
+													"}",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/chain?offset=1000&limit=10",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"chain"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "1000"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Chain",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/chain/{{chainId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"chain",
+												"{{chainId}}"
+											]
+										},
+										"description": "Requires `chainId` variable. Run `Restaurant API -> V1 -> Chain -> List Chains` to generate."
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Cuisine",
+							"description": "",
+							"item": [
+								{
+									"name": "List Cuisines",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"cuisineId\", jsonData[0].id);",
+													"}",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/cuisine?offset=0&limit=10",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"cuisine"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "0"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Cuisine",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/cuisine/{{cuisineId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"cuisine",
+												"{{cuisineId}}"
+											]
+										},
+										"description": "Requires `cuisineId` variable. Run `Restaurant API -> V1 -> Cuisine -> List Cuisines` to generate."
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Restaurant",
+							"description": "",
+							"item": [
+								{
+									"name": "List Restaurants",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"type": "text/javascript",
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"restaurantId\", jsonData[0].id);",
+													"    postman.setEnvironmentVariable(\"offerId\", jsonData[0].offers[0].id);",
+													"}",
+													""
+												]
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											},
+											{
+												"key": "X-Geo-Ip",
+												"value": "156.67.242.53",
+												"disabled": true
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/restaurant?offset=0&limit=10&searchString=restaurant&aroundLatLng=53.800755,-1.549077&distance=50",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"restaurant"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "0"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												},
+												{
+													"key": "searchString",
+													"value": "restaurant"
+												},
+												{
+													"key": "aroundLatLng",
+													"value": "53.800755,-1.549077"
+												},
+												{
+													"key": "distance",
+													"value": "50"
+												},
+												{
+													"key": "geoFromIp",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "cuisines[]",
+													"value": "o7yq0PxLZQE6KQ9p",
+													"disabled": true
+												},
+												{
+													"key": "chains[]",
+													"value": "K0q5noEY5pE8WZyL",
+													"disabled": true
+												},
+												{
+													"key": "offers[]",
+													"value": "Pj3mpRrlyzxv0Bb7",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Restaurant",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/restaurant/{{restaurantId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"restaurant",
+												"{{restaurantId}}"
+											]
+										},
+										"description": "Requires `restaurantId` variable. Run `Restaurant API -> V1 -> Restaurant -> List Restaurants` to generate."
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Offer",
+							"description": "",
+							"item": [
+								{
+									"name": "Get Offer",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/offer/{{offerId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"offer",
+												"{{offerId}}"
+											]
+										},
+										"description": "Requires `offerId` variable. Run `Restaurant API -> V1 -> Restaurant -> List Restaurants` to generate."
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Membership API",
+			"description": "",
+			"item": [
+				{
+					"name": "Cancellation Reason",
+					"description": "",
+					"item": [
+						{
+							"name": "List Cancellation Reasons",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/cancellation-reason?enabled=1&internal=0",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"cancellation-reason"
+									],
+									"query": [
+										{
+											"key": "enabled",
+											"value": "1"
+										},
+										{
+											"key": "internal",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Customer",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Customer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"customerId\", jsonData.id);",
+											"postman.setEnvironmentVariable(\"membershipId\", jsonData.memberships[0].id);",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"consumerCustomerId\": \"consumerCustomerId-{{$timestamp}}\",\n  \"membership\": {\n    \"expiryDate\": \"2020-11-22T19:28:22+00:00\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Customers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer?offset=0&limit=10",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Customer",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer/{{customerId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer",
+										"{{customerId}}"
+									]
+								},
+								"description": "Requires `customerId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Customer",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"consumerCustomerId\": \"consumerCustomerId-{{$timestamp}}\",\n    \"title\": \"Rev\",\n    \"firstName\": \"Jim\",\n    \"lastName\": \"McJimson\",\n    \"emailAddress\": \"jim@example.com\",\n    \"phoneNumber\": \"000\",\n    \"mobilePhone\": \"111\"\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer/{{customerId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer",
+										"{{customerId}}"
+									]
+								},
+								"description": "Requires `customerId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Customer",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer/{{customerId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer",
+										"{{customerId}}"
+									]
+								},
+								"description": "Requires `customerId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Customer Address",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Address",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Mrs\",\n  \"firstName\": \"Joan\",\n  \"lastName\": \"Smith\",\n  \"companyName\": \"Example\",\n  \"addressLine1\": \"0 Example Street\",\n  \"addressLine2\": \"Example Way\",\n  \"town\": \"Exampleton\",\n  \"district\": \"13\",\n  \"postalCode\": \"EX4 MPL\",\n  \"countryCode\": \"UK\",\n  \"isActive\": 0\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer/{{customerId}}/address",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer",
+										"{{customerId}}",
+										"address"
+									]
+								},
+								"description": "Requires `customerId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Customer Token",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"customerToken\", jsonData.token);",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"expiryDate\": \"2020-01-01T12:30:00+00:00\"\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer/{{customerId}}/token",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer",
+										"{{customerId}}",
+										"token"
+									]
+								},
+								"description": "Requires `customerId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Token",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Customer-Token",
+										"value": "{{customerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/customer/token",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"customer",
+										"token"
+									]
+								},
+								"description": "Requires `customerToken` variable. Run `Membership API -> Customer Token -> Create Token` to generate."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Membership",
+					"description": "",
+					"item": [
+						{
+							"name": "Update Membership",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"started\": \"2017-12-17T20:55:36+00:00\",\n  \"expires\": \"2022-12-17T20:55:36+00:00\"\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership",
+										"{{membershipId}}"
+									]
+								},
+								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "Cancel Membership",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"cancellationDate\": \"2021-02-15T17:07:49+00:00\",\n    \"cancelledFrom\": \"2021-02-15T17:07:49+00:00\",\n    \"cancellationReasonId\": \"n70zqPXBaxA9RdJ4\",\n    \"cancellationMethod\": \"Phone\"\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership",
+										"{{membershipId}}"
+									]
+								},
+								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Membership Card Usage",
+					"description": "",
+					"item": [
+						{
+							"name": "Create Card Usage",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"cardUsageId\", jsonData.id);",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"restaurantId\": \"{{restaurantId}}\",\n  \"platform\": \"mobile_app\",\n  \"offerId\": \"{{offerId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}/cardUsage",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership",
+										"{{membershipId}}",
+										"cardUsage"
+									]
+								},
+								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate.  \nRequires `restaurantId` and `offerId` variables. Run `Restaurant API -> V1 -> Restaurant -> List Restaurants` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Card Usage",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"currency\": \"GBP\",\n  \"amountTotal\": \"123.45\",\n  \"amountSaved\": \"12.34\",\n  \"offerId\": \"{{offerId}}\"\n}"
+								},
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}/cardUsage/{{cardUsageId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership",
+										"{{membershipId}}",
+										"cardUsage",
+										"{{cardUsageId}}"
+									]
+								},
+								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate.  \nRequires `cardUsageId` variable. Run `Membership API -> Membership Card Usage -> Create Card Usage` to generate.  \nRequires `offerId` variable. Run `Restaurant API -> V1 -> Restaurant -> List Restaurants` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "List Card Usages",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}/cardUsage?offset=0&limit=10",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership",
+										"{{membershipId}}",
+										"cardUsage"
+									],
+									"query": [
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Card Usage",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}/cardUsage/{{cardUsageId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership",
+										"{{membershipId}}",
+										"cardUsage",
+										"{{cardUsageId}}"
+									]
+								},
+								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate.  \nRequires `cardUsageId` variable. Run `Membership API -> Membership Card Usage -> Create Card Usage` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Card Usage",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}/cardUsage/{{cardUsageId}}",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership",
+										"{{membershipId}}",
+										"cardUsage",
+										"{{cardUsageId}}"
+									]
+								},
+								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate.  \nRequires `cardUsageId` variable. Run `Membership API -> Membership Card Usage -> Create Card Usage` to generate."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	]
+}

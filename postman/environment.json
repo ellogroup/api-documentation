@@ -1,0 +1,27 @@
+{
+  "id": "6edc0f92-6564-48af-8262-1f666a75ac94",
+  "name": "DCG",
+  "values": [
+    {
+      "key": "membershipApiUrl",
+      "value": "",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "restaurantApiUrl",
+      "value": "",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "consumerToken",
+      "value": "",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2018-04-06T14:33:03.073Z",
+  "_postman_exported_using": "Postman/6.0.10"
+}
