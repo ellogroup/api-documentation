@@ -20,6 +20,7 @@ If your client last hit the API on `2018-01-01T00:00:00Z` you send a request thr
 ```
 [
     {
+        // This restaurant would not be returned, as it's updatedAt is before the updatedSince given 
         "id": "yvmrQO82wvWa37k4",
         "type": "restaurant",
         "name": "1 Brasserie @ Downstairs",
@@ -44,6 +45,7 @@ If your client last hit the API on `2018-01-01T00:00:00Z` you send a request thr
         ...
     },
     {
+        // This restaurant would not be returned, as it's updatedAt is before the updatedSince given
         "id": "x3Qbzj8xO4M26De5",
         "type": "restaurant",
         "name": "143 the Canopy Restaurant",
@@ -56,10 +58,10 @@ If your client last hit the API on `2018-01-01T00:00:00Z` you send a request thr
 
 In the above example, you would need to perform the following actions on your cache, for each restaurant:
 
-- yvmrQO82wvWa37k4 - Nothing, restaurant last update was before your last cache update
+- yvmrQO82wvWa37k4 - Nothing - Wouldn't be returned
 - PNj6VMBAjAYLJogk - Replace the restaurant in your local cache, the restaurant was updated on the 3rd of Jan
 - y0O6bYdbml8w9oDA - Remove this restaurant from your local cache, it has it's `deletedAt` date set
-- x3Qbzj8xO4M26De5 - Nothing, restaurant last update was before your last cache update
+- x3Qbzj8xO4M26De5 - Nothing - Wouldn't be returned
 
 The basic rules of a cache update are as follows:
 
