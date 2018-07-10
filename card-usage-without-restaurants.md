@@ -1,6 +1,6 @@
 # Submitting & retrieving card usage without a restaurant
 
-A recent change allows you to submit a memberships card usage event without submitting the ID of the restaurant that the customer was visiting at the time.
+DCG have approved a temporary change (10.07.18) to allow CTM to submit a memberships card usage event without always needing to submit the ID of the restaurant that the customer was visiting at the time.
 
 This change removes some entities from the card usage response, and from the list & get interfaces for previous card usages.
 
