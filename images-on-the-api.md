@@ -7,7 +7,7 @@
 
 ## Overview
 
-In a standard restaurant object, you will recieve two image bearing properties. `images[]` and `primaryImage{}`.
+In a standard restaurant object, you will receive two image bearing properties. `images[]` and `primaryImage{}`.
 
 PrimaryImage is a hand selected image by the DCG restaurant team, that shows the restaurant at it's best. This primaryImage block will only ever contain images from the `legacy` set of images.
 
