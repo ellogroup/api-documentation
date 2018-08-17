@@ -1,0 +1,360 @@
+openapi: 3.0.0
+info:
+  version: '0.1.0'
+  title: 'White Label Service'
+  description: 'API for mobile applications'
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/the-dcg/white-label-service/0.1.0
+paths:
+  /auth/login:
+    post:
+      summary: Allows a customer to login
+      security:
+        - consumerToken: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/login'
+        description: Login parameters
+        required: true
+      responses:
+        '200':
+          description: Allows a user to log in, return a user object.
+          content:
+           application/json:
+            schema:
+              $ref: '#/components/schemas/loginResponse'
+        '400':
+          description: Invalid data.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '500':
+          description: Internal server error.
+
+  /auth/session/{id}:
+    get:
+      summary: Allows validation of a session id
+      security:
+        - consumerToken: []
+      parameters:
+        - name: id
+          in: path
+          description: Session ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Session ID is valid.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '400':
+          description: Invalid data.
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+      
+  /auth/passwordReset:
+    post: 
+      summary: Allows notification of a password reset request.
+      security:
+        - consumerToken: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/passwordReset'
+        description: Password Reset parameters
+        required: true
+      responses:
+        '202':
+          description: Request accepted. 
+        '400':
+          description: Invalid data.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '500':
+          description: Internal server error.
+
+  /customer:
+    post:
+      summary: Create a new customer account.
+      security:
+        - consumerToken: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/customerCreate'
+        description: Data required to create a customer.
+        required: true
+      responses:
+        '201':
+          description: Customer has been created.
+          content:
+           application/json:
+            schema:
+              $ref: "#/components/schemas/customer"
+        '400':
+          description: Invalid request.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '500':
+          description: Internal server error.
+
+  /customer/{id}:
+    get:
+      summary: Get a customer record.
+      security:
+        - consumerToken: []
+        - customerToken: []
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A customer object.
+          content:
+           application/json:
+            schema:
+              $ref: "#/components/schemas/customer"
+        '400':
+          description: Invalid request.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '404':
+          description: Not found.
+        '500':
+          description: Internal server error.
+
+  /customer/{id}/addMembership:
+    post:
+      summary: Add a membership to a customer account.
+      security:
+        - consumerToken: []
+        - customerToken: []
+      parameters:
+        - name: id
+          in: path
+          description: Customer ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addMembership'
+        description: Data required to create a customer.
+        required: true
+      responses:
+        '200':
+          description: Membership has been added to the customer.
+        '400':
+          description: Invalid request.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '500':
+          description: Internal server error.
+      
+  /membership/{id}/validate:
+    post:
+      summary: Validate a given membership number
+      security:
+        - consumerToken: []
+      parameters:
+        - name: id
+          in: path
+          description: Membership ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns a membership validation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/membershipValidation'
+        '400':
+          description: Invalid request.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '500':
+          description: Internal server error.
+
+  /usage:
+    post:
+      summary: Create a new membership card usage.
+      security:
+        - consumerToken: []
+        - customerToken: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/usage'
+        description: Password Reset parameters
+        required: true
+      responses:
+        '201':
+          description: Usage has been created.
+        '400':
+          description: Invalid request.
+        '401':
+           $ref: "#/components/responses/unauthorisedError"
+        '500':
+          description: Internal server error.
+
+components:
+  securitySchemes:
+    consumerToken:
+      type: apiKey
+      in: header
+      name: X-Consumer-Token
+    customerToken:
+      type: apiKey
+      in: header
+      name: X-Customer-Token
+
+  responses:
+    unauthorisedError:
+      description: Header API key is missing or invalid
+      headers:
+        consumerToken:
+          schema:
+            $ref: '#/components/securitySchemes/consumerToken'
+      
+  schemas:
+    login:
+      type: object
+      properties:
+        email:
+          type: string
+          example: 'John@smith.com'
+          description: Customer's email address.
+        password:
+          type: string
+          example: '************'
+          description: Customer's password.
+      required:
+        - email
+        - password
+    loginResponse:
+      type: object
+      properties:
+        customerAccessToken:
+          type: string
+          example: 'hsdjsiaj90789043'
+        customerId:
+          type: string
+          example: 'hsdjsiaj90789043'
+      required:
+        - customerAccessToken
+        - customerId
+    passwordReset:
+      type: object
+      properties:
+        email:
+          type: string
+          example: 'John@smith.com'
+      required:
+        - email
+    customerCreate:
+      type: object
+      properties:
+        firstName: 
+          type: string
+          example: 'John'
+        lastName:
+          type: string
+          example: 'Smith'
+        email: 
+          type: string
+          example: 'John@smith.com'
+        membership:
+          $ref: '#/components/schemas/membershipCreate'
+      required:
+        - firstName
+        - lastName
+        - email
+        - membership
+    membershipCreate:
+      type: object
+      properties:
+        number: 
+          type: string
+          example: 'ih5743845747'
+      required:
+        - number
+    customer: 
+      type: object
+      properties:
+        firstName: 
+          type: string
+          example: 'John'
+        lastName:
+          type: string
+          example: 'Smith'
+        email: 
+          type: string
+          example: 'John@smith.com'
+        membership:
+          $ref: '#/components/schemas/membership'
+      required:
+        - firstName
+        - lastName
+        - email
+        - membership
+    membership:
+      type: object
+      properties:
+        number: 
+          type: string 
+          example: 'ih5743845747'
+      required:
+        - number
+    addMembership:
+      type: object
+      properties:
+        membershipNumber:
+          type: string
+          example: 'ih5743845747'
+      required:
+        - membershipNumber
+    membershipValidation:
+      type: object
+      properties:
+        validMembership:
+          type: boolean
+          example: true
+        associatedWithCustomer:
+          type: boolean
+          example: false
+      required:
+        - validMembership
+        - associatedWithCustomer
+    usage:
+      type: object
+      properties:
+        membershipNumber:
+          type: string
+          example: 'ih5743845747'
+        restaurantReference:
+          type: string
+          example: 'ih4398y5'
+        eventTime:
+          type: string
+          format: date-time
+          example: '2017-01-01T12:30:00+00:00'
+      required:
+        - membershipNumber
+        - restaurantReference
+        - eventTime

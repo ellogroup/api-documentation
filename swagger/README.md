@@ -16,4 +16,6 @@ membership-service-version.txt
 membership-service.yaml
 restaurant-service-version.txt
 restaurant-service.yaml
+white-label-service-version.txt
+white-label-service.yaml
 ```
