@@ -1,0 +1,1016 @@
+swagger: '2.0'
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /the-dcg/membership-service/1.1.0
+schemes:
+ - https
+
+info:
+  description: Membership service helps internal and 3rd party consumer create and manage customers & memberships
+  version: "1.1.0"
+  title: Membership Service
+
+paths:
+  /customer:
+    get:
+      security:
+        - ConsumerToken: []
+      tags:
+        - Customers
+      summary: Retrieves a list of customers assigned to your consumer
+      description:
+        By passing in the appropriate options, you can search for
+        customers that have been created while you have been a consumer of the system
+      parameters:
+        - in: query
+          name: searchString
+          description: pass an optional search string for looking up inventory
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Customer'
+        '400':
+          description: bad input parameter
+        '503':
+          description: Service unavailable
+    post:
+      security:
+        - ConsumerToken: []
+      tags:
+        - Customers
+      summary: Creates a new customer
+      description: Creates a new customer record, can optionally also accept a membership
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/CustomerPostBody'
+        description: Customer record to create
+      responses:
+        '201':
+          schema:
+            $ref: '#/definitions/Customer'
+          description: customer created
+        '400':
+          description: 'invalid input, object invalid'
+        '409':
+          description: an existing item already exists
+        '503':
+          description: Service unavailable
+  /customer/{id}:
+    get:
+      security:
+        - ConsumerToken: []
+      tags:
+        - Customers
+      summary: Retrieves a customer by their customer ID
+      parameters:
+        - in: path
+          name: id
+          description: ID of customer
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          schema:
+            $ref: '#/definitions/Customer'
+        '400':
+          description: bad input parameter
+        '503':
+          description: Service unavailable
+    patch:
+      security:
+        - ConsumerToken: []
+      tags:
+        - Customers
+      summary: Updates a customer
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: ID of customer
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: The customer fields that can be updated using the patch
+          schema:
+            $ref: '#/definitions/CustomerPatchBody'
+      responses:
+        '202':
+          description: Customer updated successfully
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '503':
+          description: Service unavailable
+    delete:
+      security:
+        - ConsumerToken: []
+      tags:
+        - Customers
+      summary: Deletes a customer
+      parameters:
+        - in: path
+          name: id
+          description: ID of customer
+          required: true
+          type: integer
+      responses:
+        '204':
+          description: Customer deleted successfully
+        '400':
+          description: bad input parameter
+        '503':
+          description: Service unavailable
+
+  /customer/{id}/address:
+    post:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Customers
+      summary: Create address linked to a customer
+      consumes:
+        - application/json
+      parameters:
+      - in: path
+        name: id
+        description: ID of customer
+        required: true
+        type: integer
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/NewAddress'
+      responses:
+        '201':
+          description: Created a new address
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized - The user did not provide sufficient authorisation information
+        '404':
+          description: Not Found - The requested resource could not be found
+        '500':
+          description: Internal Server Error
+        '503':
+          description: Service unavailable
+
+  /customer/{id}/token:
+    post:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Customer Token
+      summary: Create a new access token for a customer.
+      consumes:
+        - application/json
+      parameters:
+      - name: id
+        in: path
+        description: ID of customer
+        required: true
+        type: integer
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/NewTokenPostBody'
+      produces:
+        - application/json
+      responses:
+        '400':
+          description: Bad Request
+        '201':
+          description: Create Token
+          schema:
+            $ref: '#/definitions/NewToken'
+        '401':
+          description: Unauthorized - The user did not provide sufficient authorisation information
+        '404':
+          description: Not Found - The requested resource could not be found
+        '500':
+          description: Internal Server Error
+        '503':
+          description: Service unavailable
+
+  /customer/token:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Customer Token
+      summary: Verify the given token is valid.
+      parameters:
+        - in: header
+          name: X-Customer-Token
+          description: A token identifying the individual customer accessing the API
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: The matching valid token and expiry date
+          schema:
+            $ref: '#/definitions/Token'
+        '400':
+          description: bad input parameter
+        '401':
+          description: Unauthorized - The user did not provide sufficient authorisation information
+        '404':
+          description: Not Found - The requested resource could not be found
+        '500':
+          description: Internal Server Error
+        '503':
+          description: Service unavailable
+
+  /membership/{id}:
+    patch:
+      security:
+        - ConsumerToken: []
+      tags:
+        - Membership
+      summary: Allows updating start & expiry dates for a membership along with cancelling a membership.
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: Membership ID
+          required: true
+          type: string
+        - in: body
+          name : body
+          description: The cancellationDate & cancelledFrom fields must have valid dates if you wish to cancel a membership
+          required: true
+          schema:
+            $ref: '#/definitions/MembershipPatchBody'
+      responses:
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '202':
+          description: Update Accepted
+        '503':
+          description: Service unavailable
+
+  /membership/{id}/cardUsage:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Card Usage
+      summary: Retrieves a list of card usages for the particular membership
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+        - in: query
+          name: limit
+          description: Limit the number of results
+          required: false
+          type: integer
+        - in: query
+          name: offset
+          description: Amount of rows to skip before listing results
+          required: false
+          type: integer
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UseCardRef'
+        '400':
+          description: bad input parameter
+        '503':
+          description: Service unavailable
+    post:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Card Usage
+      summary: Records a customer using their discount card.
+      consumes:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/UseCardPostBody'
+      produces:
+        - application/json
+      responses:
+        '400':
+          description: Bad Request
+        '201':
+          description: Card Used. The offer object will only be present in the response if an offerId was specified.
+          schema:
+            $ref: '#/definitions/UseCard'
+        '503':
+          description: Service unavailable
+  /membership/{id}/cardUsage/{cardUsageId}:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Card Usage
+      summary: Retrieves a specific card usage event for the particular membership.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+        - in: path
+          name: cardUsageId
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Card usage. The offer and price objects may be omitted from the response.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UseCardWithPrice'
+        '400':
+          description: bad input parameter
+        '503':
+          description: Service unavailable
+    patch:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Card Usage
+      summary: Adds savings and total spend to a customer's card usage
+      parameters:
+        - in: path
+          name: id
+          description: Card Usage ID previously created
+          required: true
+          type: string
+        - in: path
+          name: cardUsageId
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: This patch interface has no required fields
+          schema:
+              $ref: '#/definitions/UseCardPatchBody'
+      consumes:
+        - application/json
+      responses:
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '200':
+          description: Savings Recorded
+        '503':
+          description: Service unavailable
+    delete:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Card Usage
+      summary: Delete a given card usage event for the given membership.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+        - in: path
+          name: cardUsageId
+          required: true
+          type: string
+      responses:
+        '204':
+          description: Card usage deleted successfully
+        '400':
+          description: Bad input parameter
+        '503':
+          description: Service unavailable
+  /cancellation-reason:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Cancellation
+      summary: Retrieves a list of cancellation reasons. Reasons can be nested
+      parameters:
+        - in: query
+          name: enabled
+          description: filters based on whether they are enabled or not
+          type: integer
+          enum:
+            - 0
+            - 1
+        - in: query
+          name: internal
+          description: filters based on whether they are for internal use or not
+          type: integer
+          enum:
+            - 0
+            - 1
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: List of cancellation reasons
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CancellationReason'
+        '503':
+          description: Service unavailable
+
+definitions:
+  Customer:
+    type: object
+    required:
+      - consumerCustomerId
+    properties:
+      id:
+        type: string
+        format: string
+        example: "23823ujasljdf82"
+        description: Unique ID generated by DCG
+      consumerCustomerId:
+        type: string
+        format: string
+        description: Your unique customer identifier
+        example: "asljfjasdj2342342"
+      consumerId:
+        type: integer
+        format: integer
+        description: Your consumer identifier
+        example: 73
+      title:
+        type: string
+        format: string
+        example: "Mrs"
+      firstName:
+        type: string
+        format: string
+        example: "Joan"
+      lastName:
+        type: string
+        format: string
+        example: "Smith"
+      emailAddress:
+        type: string
+        format: string
+        example: "joan.smith@example.com"
+      phoneNumber:
+        type: string
+        format: string
+        example: "+44 1234 123456"
+      mobilePhone:
+        type: string
+        format: string
+        example: "07890 123456"
+      addresses:
+        type: array
+        description: All addresses that have been associated with this customer
+        items:
+          $ref: '#/definitions/Address'
+      activeAddress:
+        $ref: '#/definitions/Address'
+      billingAddress:
+        $ref: '#/definitions/Address'
+      memberships:
+        type: array
+        description: All memberships that have been associated with this customer
+        items:
+          $ref: '#/definitions/Membership'
+  CustomerPatchBody:
+    type: object
+    properties:
+      consumerCustomerId:
+        type: string
+        format: string
+        description: Your unique customer identifier
+        example: "asljfjasdj2342342"
+      title:
+        type: string
+        format: string
+        example: "Mrs"
+      firstName:
+        type: string
+        format: string
+        example: "Joan"
+      lastName:
+        type: string
+        format: string
+        example: "Smith"
+      emailAddress:
+        type: string
+        format: string
+        example: "joan.smith@example.com"
+      phoneNumber:
+        type: string
+        format: string
+        example: "+44 1234 123456"
+      mobilePhone:
+        type: string
+        format: string
+        example: "07890 123456"
+  CustomerPostBody:
+    type: object
+    properties:
+      consumerCustomerId:
+        type: string
+        format: string
+        description: Your unique customer identifier
+        example: "asljfjasdj2342342"
+      membership:
+        type: object
+        properties:
+          expiryDate:
+            type: string
+            format: ISO 8601 date
+            example: "2019-11-22T19:28:22+00:00"
+          terms:
+            $ref: '#/definitions/Terms'
+  Membership:
+    required:
+      - expires
+    properties:
+      id:
+        type: string
+        format: string
+        example: "1235ABCVSADF"
+      status:
+        type: string
+        format: string
+        example: "active"
+      started:
+        type: string
+        format: ISO 8601 date
+        example: "2017-11-22T19:28:22+00:00"
+      expires:
+        type: string
+        format: ISO 8601 date
+        example: "2017-11-22T19:28:22+00:00"
+      product:
+        $ref: '#/definitions/Product'
+      trialPeriod:
+        $ref: '#/definitions/TrialPeriod'
+      type:
+        type: string
+        format: string
+        example: "B2B"
+      number:
+        type: string
+        format: string
+        example: "1234567"
+      cardNumber:
+        type: string
+        format: string
+        example: "12345678"
+      cardholderName:
+        type: string
+        format: string
+        example: "Mrs J Smith"
+      terms:
+        $ref: '#/definitions/Terms'
+    type: object
+  MembershipPatchBody:
+    type: object
+    properties:
+      expires:
+        type: string
+        format: ISO 8601 date
+        example: "2017-11-22T19:28:22+00:00"
+      started:
+        type: string
+        format: ISO 8601 date
+        example: "2017-11-22T19:28:22+00:00"
+      cancellationDate:
+        type: integer
+        format: ISO 8601 date
+        example: "2017-11-22T19:28:22+00:00"
+      cancelledFrom:
+        type: string
+        format: ISO 8601 date
+        example: "2017-11-22T19:28:22+00:00"
+      cancellationReasonId:
+        type: string
+        format: string
+        example: "123456ABCDEF"
+      cancellationMethod:
+        type: string
+        format: string
+        example: "Phone"
+      terms:
+        $ref: '#/definitions/Terms'
+  Terms:
+    type: object
+    properties:
+      acceptedDate:
+        format: datettime
+        example: "2018-01-01T00:00:00Z00:00"
+      versionId:
+        type: string
+        example: "ABC123567"
+      termsId:
+        type: string
+        example: "DEF123975"
+  Brand:
+    type: object
+    properties:
+      logoUrl:
+        type: string
+        format: string
+        example: "https://s3.amazonaws.com/logo.jpg"
+      name:
+        type: string
+        format: string
+        example: "tastecard"
+  Offer:
+    type: object
+    properties:
+      id:
+        type: string
+        format: string
+        example: 123456ABCDEF
+      name:
+        type: string
+        format: string
+        example: "20% off the total bill, 7 days a week"
+  Price:
+    type: object
+    properties:
+      currency:
+        type: string
+        format: string
+        example: "GBP"
+      amountTotal:
+        type: string
+        format: string
+        example: "123.45"
+      amountSaved:
+        type: string
+        format: string
+        example: "12.34"
+  Product:
+    type: object
+    properties:
+      id:
+        type: string
+        format: string
+        example: "kp1DKqxvBx0ZMQ6W"
+      name:
+        type: string
+        format: string
+        example: "tastecard 30 day free trial"
+  TrialPeriod:
+    type: object
+    properties:
+      unit:
+        type: integer
+        format: integer
+        example: 1
+      period:
+        type: string
+        format: string
+        example: "month"
+
+  BaseAddress:
+    type: object
+    required:
+      - firstName
+      - lastName
+      - addressLine1
+      - countryCode
+    properties:
+      title:
+        type: string
+        format: string
+        example: "Mrs"
+      firstName:
+        type: string
+        format: string
+        example: "Joan"
+      lastName:
+        type: string
+        format: string
+        example: "Smith"
+      companyName:
+        type: string
+        format: string
+        example: "Example"
+      addressLine1:
+        type: string
+        format: string
+        example: "0 Example Street"
+      addressLine2:
+        type: string
+        format: string
+        example: "Example Way"
+      town:
+        type: string
+        format: string
+        example: "Exampleton"
+      district:
+        type: string
+        format: string
+        example: "13"
+      postalCode:
+        type: string
+        format: string
+        example: "EX4 MPL"
+      countryCode:
+        type: string
+        format: string
+        example: "UK"
+
+  Address:
+    allOf:
+      - $ref: '#/definitions/BaseAddress'
+      - type: object
+        properties:
+          id:
+            type: string
+            format: string
+            example: "bK4ovQXQGrlA70Wa"
+
+
+  NewAddress:
+    allOf:
+      - $ref: '#/definitions/BaseAddress'
+      - type: object
+        properties:
+          isActive:
+            description: Set this address to the users' active address
+            type: integer
+            enum: [0,1]
+
+  UseCard:
+    type: object
+    required:
+      - id
+      - membershipId
+      - restaurantId
+      - platform
+      - usageTime
+      - brand
+      - membership
+    properties:
+      id:
+        type: string
+        format: string
+        example: "ABC123ABC"
+      membershipId:
+        type: string
+        format: string
+        example: "1235ABCVSADF"
+      restaurantId:
+        type: string
+        format: string
+        example: "ASDFA485686"
+      platform:
+        type: string
+        format: string
+        example: "app"
+      numberInParty:
+        type: integer
+        format: integer
+        example: 2
+        description: "Number of people who used the card in this restaurant."
+      usageTime:
+        type: string
+        format: string
+        example: "2017-12-13 11:33:15"
+        description: "Will default to now() on creation if no usage time specified"
+      deviceLocation:
+        $ref: '#/definitions/DeviceLocation'
+      brand:
+        $ref: '#/definitions/Brand'
+      membership:
+        $ref: '#/definitions/Membership'
+      offer:
+        $ref: '#/definitions/Offer'
+  UseCardWithPrice:
+    allOf:
+      - $ref: '#/definitions/UseCard'
+      - type: object
+        properties:
+          price:
+            $ref: '#/definitions/Price'
+  UseCardRef:
+    type: object
+    required:
+      - id
+      - membershipId
+      - restaurantId
+      - platform
+      - usageTime
+    properties:
+      id:
+        type: string
+        format: string
+        example: ABC123ABC
+      membershipId:
+        type: string
+        format: string
+        example: ABC123ABC
+      restaurantId:
+        type: string
+        format: string
+        example: ABC123ABC
+      platform:
+        type: string
+        format: string
+        example: web
+      usageTime:
+        type: string
+        format: date
+        example: "2018-01-28T10:00:00+00:00"
+      numberInParty:
+        type: integer
+        format: integer
+        example: 2
+        description: "Number of people who used the card in this restaurant."
+      deviceLocation:
+        $ref: '#/definitions/DeviceLocation'
+      price:
+            $ref: '#/definitions/Price'
+      offer:
+        $ref: '#/definitions/Offer'
+  UseCardPostBody:
+    type: object
+    required:
+      - restaurantId
+      - platform
+    properties:
+      restaurantId:
+        type: string
+        format: string
+        example: "ASDFA485686"
+      platform:
+        type: string
+        format: string
+        example: "app"
+      offerId:
+        type: string
+        format: string
+        example: "ACBDEF123456"
+      usageTime:
+        type: string
+        format: string
+        example: "2017-12-13 11:33:15"
+      numberInParty:
+        type: integer
+        format: integer
+        example: 2
+        description: "Number of people who used the card in this restaurant."
+      deviceLocation:
+        $ref: '#/definitions/DeviceLocation'
+  UseCardPatchBody:
+    type: object
+    required:
+      - currency
+      - amountTotal
+      - amountSaved
+    properties:
+      currency:
+        type: string
+        format: string
+        example: "GBP"
+      amountTotal:
+        type: string
+        format: string
+        example: "123.45"
+      amountSaved:
+        type: string
+        format: string
+        example: "12.34"
+      usageTime:
+        type: string
+        format: string
+        example: "2017-12-13 11:33:15"
+      offerId:
+        type: string
+        format: string
+        example: "ACBDEF123456"
+      numberInParty:
+        type: integer
+        format: integer
+        example: 2
+        description: "Number of people who used the card in this restaurant."
+      deviceLocation:
+        $ref: '#/definitions/DeviceLocation'
+  DeviceLocation:
+    type: object
+    required:
+      - latitude
+      - longitude
+    properties:
+      latitude:
+        type: string
+        example: "53.800755"
+      longitude:
+        type: string
+        example: "-1.549077"
+  Token:
+    type: object
+    properties:
+      token:
+        type: string
+        format: string
+        example: '3730dcbc-b4ef-4794-80cb-7412e78a2c43'
+      expiryDate:
+        type: string
+        format: date-time
+        example: '2017-01-01T12:30:00+00:00'
+      customer:
+        $ref: '#/definitions/Customer'
+  NewTokenPostBody:
+    type: object
+    properties:
+      expiryDate:
+        type: string
+        format: date-time
+        example: '2017-01-01T12:30:00+00:00'
+  NewToken:
+    type: object
+    properties:
+      token:
+        type: string
+        format: string
+        example: '3730dcbc-b4ef-4794-80cb-7412e78a2c43'
+      expiryDate:
+        type: string
+        format: date-time
+        example: '2017-01-01T12:30:00+00:00'
+  CancellationReason:
+    type: object
+    properties:
+      id:
+        type: string
+      reason:
+        type: string
+      parent_id:
+        type: string
+      internal_use_only:
+        type: integer
+        enum: [0,1]
+      enabled:
+        type: integer
+        enum: [0,1]
+      children:
+        type: array
+        items:
+          $ref: '#/definitions/CancellationReason'
+securityDefinitions:
+  ConsumerToken:
+    type: apiKey
+    in: header
+    name: X-Consumer-Token
+    description: The private token that you as a consumer will use to initeract with the DCG services
+  CustomerToken:
+    type: apiKey
+    in: header
+    name: X-Customer-Token
+    description: The token generated by the membership service on POST /customer/{id}/token that allows you to give customers their own token for on-device access to the restaurant API and card usage API without sharing your secret key
