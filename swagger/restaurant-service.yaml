@@ -1,0 +1,774 @@
+swagger: '2.0'
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /the-dcg/restaurant-service/1.8.0
+schemes:
+  - https
+
+info:
+  description: Manages restaurants
+  version: "1.8.1"
+  title: Restaurant Service
+
+paths:
+  /restaurant:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Restaurant
+      summary: Retrieves a list of restaurants
+      description: |
+        A paginated list of restaurants matching the filter (if one is provided)
+      parameters:
+        - in: header
+          name: X-Geo-IP
+          description: If the geoFromIp parameter is set, the IP address in this header will be used to calculate the user's location.
+          required: false
+          type: string
+        - in: header
+          name: X-Forwarded-For
+          description: If the geoFromIp parameter is set and the X-Geo-IP header is missing, the IP address in this header will be used to calculate the user's location. This will be set automatically by the load balancer.
+          required: false
+          type: string
+        - in: query
+          name: offset
+          description: The row offset to start from
+          required: false
+          default: 0
+          type: integer
+          minimum: 0
+        - in: query
+          name: limit
+          description: The row limit to return (max 100)
+          required: false
+          default: 100
+          type: integer
+          minimum: 1
+          maximum: 100
+        - in: query
+          name: searchString
+          description: Pass an optional search string for looking up a restaurant - this will match against the restaurant name and address.
+          required: false
+          type: string
+        - in: query
+          name: aroundLatLng
+          description: Pass an optional lattitude and longitude to search around e.g. "55,-4"
+          required: false
+          type: string
+        - in: query
+          name: distance
+          description: Pass an optional distance in km for use in aroundLatLng e.g. "3"
+          required: false
+          type: string
+        - in: query
+          name: geoFromIp
+          description: Set to 1 to use an IP address in the request headers to determine the user's location. If this is set, the aroundLatLng parameter will be ignored, but the distance parameter can still be used.
+          required: false
+          default: 0
+          type: integer
+          minimum: 0
+          maximum: 1
+        - in: query
+          name: cuisines[]
+          description: Pass an optional array of cuisine id's to filter by
+          required: false
+          type: string
+        - in: query
+          name: chains[]
+          description: Pass an optional array of chain id's to filter by
+          required: false
+          type: string
+        - in: query
+          name: offers[]
+          description: Pass an optional array of offer id's to filter by
+          required: false
+          type: string
+        - in: query
+          name: diners
+          description: Pass an optional numeric value to filter by max diners
+          required: false
+          type: string
+        - in: query
+          name: updatedSince
+          description: Pass an optional ISO 8601 date for looking up restaurants that have been updated or deleted since that date. To ensure that you don't miss any updates, you should pass the value returned in the X-Cache-Updated response header from the previous request.
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Restaurant'
+        '400':
+          description: Client validation errors
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            $ref: '#/definitions/ValidationErrors'
+        '503':
+          description: Service unavailable
+  /restaurant/{id}:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Restaurant
+      summary: Retrieves a specific restaurant
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+        - in: query
+          name: includeDeleted
+          description: Set to 1 to include deleted restaurants, leave unset to exclude deleted restaurant.
+          required: false
+          default: 0
+          type: integer
+          minimum: 0
+          maximum: 1
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            $ref: '#/definitions/Restaurant'
+        '404':
+          description: not found
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+        '503':
+          description: Service unavailable
+  /chain:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Restaurant Chain
+      summary: Retrieves a list of restaurant chains
+      description: |
+        A paginated list of restaurant chains
+      parameters:
+        - in: query
+          name: offset
+          description: The row offset to start from
+          required: false
+          default: 0
+          type: integer
+          minimum: 0
+        - in: query
+          name: limit
+          description: The row limit to return (max 100)
+          required: false
+          default: 100
+          type: integer
+          minimum: 1
+          maximum: 100
+        - in: query
+          name: updatedSince
+          description: Pass an optional ISO 8601 date for looking up restaurants that have been updated or deleted since that date. To ensure that you don't miss any updates, you should pass the value returned in the X-Cache-Updated response header from the previous request.
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Chain'
+        '400':
+          description: Client validation errors
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            $ref: '#/definitions/ValidationErrors'
+        '503':
+          description: Service unavailable
+  /chain/{id}:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Restaurant Chain
+      summary: Retrieves information about a restaurant chain
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            $ref: '#/definitions/Chain'
+        '404':
+          description: not found
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+        '503':
+          description: Service unavailable
+  /offer/{id}:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Offer
+      summary: Retrieves details of an offer
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            $ref: '#/definitions/Offer'
+        '404':
+          description: not found
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+        '503':
+          description: Service unavailable
+  /cuisine:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Cuisine
+      summary: Retrieves a list of cuisines
+      parameters:
+        - in: query
+          name: offset
+          description: The row offset to start from
+          required: false
+          default: 0
+          type: integer
+          minimum: 0
+        - in: query
+          name: limit
+          description: The row limit to return (max 100)
+          required: false
+          default: 100
+          type: integer
+          minimum: 1
+          maximum: 100
+        - in: query
+          name: updatedSince
+          description: Pass an optional ISO 8601 date for looking up restaurants that have been updated or deleted since that date. To ensure that you don't miss any updates, you should pass the value returned in the X-Cache-Updated response header from the previous request.
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Cuisine'
+        '400':
+          description: Client validation errors
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            $ref: '#/definitions/ValidationErrors'
+        '503':
+          description: Service unavailable
+  /cuisine/{id}:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Cuisine
+      summary: Retrieves information about a cuisine
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            $ref: '#/definitions/Cuisine'
+        '404':
+          description: not found
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+        '503':
+          description: Service unavailable
+  /brand:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Brand
+      summary: Retrieves a list of all brands
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: all brands
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Brand'
+        '503':
+          description: Service unavailable
+  /brand/{id}:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Brand
+      summary: Retrieves information about a brand
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: the specified brand
+          schema:
+            $ref: '#/definitions/Brand'
+        '404':
+          description: not found
+        '503':
+          description: Service unavailable
+definitions:
+  Restaurant:
+    type: object
+    required:
+      - id
+      - type
+      - name
+      - cuisines
+      - images
+      - primaryImage
+      - website
+      - description
+      - bookingTelephone
+      - bookingEmail
+      - bookingUrl
+      - isBookingRequired
+      - offers
+      - address
+      - geo
+      - updatedAt
+      - deletedAt
+    properties:
+      id:
+        type: string
+        format: string
+        example: "23823ujasljdf82"
+      type:
+        type: string
+        format: string
+        example: restaurant
+      name:
+        type: string
+        format: string
+        example: "1 Brasserie @ Downstairs"
+      cuisines:
+        type: array
+        items:
+          $ref: '#/definitions/CuisineRef'
+      chain:
+        type: object
+        $ref: '#/definitions/RestaurantChain'
+      brand:
+        type: object
+        $ref: '#/definitions/BrandRef'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/TaggedImage'
+      primaryImage:
+        description: Thumbnail for restaurant
+        type: object
+        $ref: '#/definitions/TaggedImage'
+      website:
+        type: string
+        format: string
+        example: "https://1brasserie.com"
+      description:
+        type: string
+        format: string
+        example: "This is a restaurant description"
+      bookingTelephone:
+        type: string
+        format: string
+        example: "01234 567890"
+      bookingEmail:
+        type: string
+        format: string
+        example: "1@brasserie.com"
+      bookingUrl:
+        type: string
+        format: string
+        example: "brasserie.com"
+      isBookingRequired:
+        type: boolean
+        format: boolean
+        example: false
+      offers:
+        type: array
+        items:
+          $ref: '#/definitions/Offer'
+      address:
+        type: object
+        $ref: '#/definitions/Address'
+      geo:
+        type: object
+        $ref: '#/definitions/Geolocation'
+      updatedAt:
+        type: string
+        format: date-time
+        description: The datetime when this restaurant was last updated in RFC3339 format (ISO 8601 compatible)
+        example: '2018-04-30T12:54:34Z'
+      deletedAt:
+        type: string
+        format: date-time
+        description: Null or the datetime when this restaurant was deleted in RFC3339 format (ISO 8601 compatible)
+        example: '2018-04-30T12:54:34Z'
+  RestaurantChain:
+    type: object
+    description: A restaurant chain differs from a chain only in the number of fields returned. Note that a restaurant may not have a chain, in which case the object will be empty
+    properties:
+      id:
+        type: string
+        example: dgiohrj895
+      name:
+        type: string
+        example: Pizza Express
+  Chain:
+    type: object
+    properties:
+      id:
+        type: string
+        example: dgiohrj895
+      name:
+        type: string
+        example: Pizza Express
+      numberOfRestaurants:
+        type: number
+        example: 23
+      cuisines:
+        type: array
+        items:
+          $ref: '#/definitions/CuisineRef'
+      images:
+        type: array
+        items:
+          $ref: '#/definitions/Image'
+      primaryImage:
+        type: object
+        $ref: '#/definitions/Image'
+      description:
+        type: string
+        example: "We sell pizzas"
+      offers:
+        type: array
+        items:
+          $ref: '#/definitions/Offer'
+      updatedAt:
+        type: string
+        format: date-time
+        description: The datetime when this chain was last updated in RFC3339 format (ISO 8601 compatible)
+        example: '2018-04-30T12:54:34Z'
+      deletedAt:
+        type: string
+        format: date-time
+        description: Null or the datetime when this chain was deleted in RFC3339 format (ISO 8601 compatible)
+        example: '2018-04-30T12:54:34Z'
+  CuisineRef:
+    type: object
+    properties:
+      id:
+        type: string
+        example: aslfj239048
+      name:
+        type: string
+        example: Indian
+  Cuisine:
+    type: object
+    properties:
+      id:
+        type: string
+        example: aslfj239048
+      name:
+        type: string
+        example: Indian
+      numberOfRestaurants:
+        type: number
+        example: 23
+      updatedAt:
+        type: string
+        format: date-time
+        description: The datetime when this cuisine was last updated in RFC3339 format (ISO 8601 compatible)
+        example: '2018-04-30T12:54:34Z'
+      deletedAt:
+        type: string
+        format: date-time
+        description: Null or the datetime when this cuisine was deleted in RFC3339 format (ISO 8601 compatible)
+        example: '2018-04-30T12:54:34Z'
+  Image:
+    type: object
+    properties:
+      id:
+        type: string
+        example: aslfj23asdfjasjfs9048
+      href:
+        type: string
+        example: https://s3.amazonaws.com/image.jpg
+  TaggedImage:
+    type: object
+    description: An optional key that may not be present. A selection of thumbnails (tagged 'dcg-internal') and higher quality images
+    properties:
+      id:
+        type: string
+        example: aslfj23asdfjasjfs9048
+      href:
+        type: string
+        example: https://s3.amazonaws.com/image.jpg
+      tags:
+        type: string
+        example:
+          - "food"
+          - "exterior"
+          - "indoor"
+          - "dcg-internal"
+  Geolocation:
+    type: object
+    properties:
+      lat:
+        type: number
+        example: 55.865233060606
+      lng:
+        type: number
+        example: -4.2645282926424
+  Offer:
+    type: object
+    properties:
+      id:
+        type: string
+        example: asjdfasdf4856
+      name:
+        type: string
+        example: "20% off the total bill, 7 days a week"
+      availability:
+        type: object
+        $ref: '#/definitions/Availability'
+      maxDiners:
+        type: integer
+        example: 2
+  Availability:
+    type: object
+    properties:
+      monday:
+        type: object
+        $ref: '#/definitions/AvailabilityTime'
+      tuesday:
+        type: object
+        $ref: '#/definitions/AvailabilityTime'
+      wednesday:
+        type: object
+        $ref: '#/definitions/AvailabilityTime'
+      thursday:
+        type: object
+        $ref: '#/definitions/AvailabilityTime'
+      friday:
+        type: object
+        $ref: '#/definitions/AvailabilityTime'
+      saturday:
+        type: object
+        $ref: '#/definitions/AvailabilityTime'
+      sunday:
+        type: object
+        $ref: '#/definitions/AvailabilityTime'
+  AvailabilityTime:
+    type: object
+    properties:
+      day:
+        type: boolean
+        example: true
+      evening:
+        type: boolean
+        example: false
+  Restriction:
+    type: object
+    properties:
+      id:
+        type: string
+        example: asjdfasdf4856
+      offer:
+        type: object
+        $ref: '#/definitions/Offer'
+      friday:
+        type: boolean
+        example: true
+      saturday:
+        type: boolean
+        example: true
+  Address:
+    type: object
+    properties:
+      building:
+        type: string
+        format: string
+        example: "192"
+      street:
+        type: string
+        format: string
+        example: "Leeds Way"
+      town:
+        type: string
+        format: string
+        example: "Leeds"
+      county:
+        type: string
+        format: string
+        example: "West Yorkshire"
+      postcode:
+        type: string
+        format: string
+        example: "LS1 1SL"
+      country:
+        type: string
+        format: string
+        example: "UK"
+      locality:
+        type: string
+        format: string
+        example: "Pimlico"
+  BrandRef:
+    type: object
+    properties:
+      id:
+        type: string
+        format: string
+        example: "abc123"
+      name:
+        type: string
+        format: string
+        example: "hi-life"
+  Brand:
+    type: object
+    properties:
+      id:
+        type: string
+        format: string
+        example: "abc123"
+      name:
+        type: string
+        format: string
+        example: "hi-life"
+      images:
+        type: object
+        $ref: '#/definitions/BrandImages'
+  BrandImages:
+    type: object
+    properties:
+      svg:
+        type: string
+        format: string
+        example: "<svg></svg>"
+  ValidationErrors:
+    type: object
+    properties:
+      errors:
+        type: array
+        items:
+          $ref: '#/definitions/ValidationError'
+  ValidationError:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        format: string
+        example: "Failed to parse datetime"
+      parameter:
+        type: string
+        format: string
+        example: "updatedSince"
+
+securityDefinitions:
+  ConsumerToken:
+    type: apiKey
+    in: header
+    name: X-Consumer-Token
+  CustomerToken:
+    type: apiKey
+    in: header
+    name: X-Customer-Token
