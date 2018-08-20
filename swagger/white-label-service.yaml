@@ -32,30 +32,6 @@ paths:
            $ref: "#/components/responses/unauthorisedError"
         '500':
           description: Internal server error.
-
-  /auth/session/{id}:
-    get:
-      summary: Allows validation of a session id
-      security:
-        - consumerToken: []
-      parameters:
-        - name: id
-          in: path
-          description: Session ID
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Session ID is valid.
-        '401':
-           $ref: "#/components/responses/unauthorisedError"
-        '400':
-          description: Invalid data.
-        '404':
-          description: Not found.
-        '500':
-          description: Internal server error.
       
   /auth/passwordReset:
     post: 
