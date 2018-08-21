@@ -126,14 +126,14 @@ paths:
         '500':
           description: Internal server error.
       
-  /membership/{membershipNumber}/validate:
-    post:
+  /membership/validate:
+    get:
       summary: Validate a given membership number
       security:
         - consumerToken: []
       parameters:
         - name: membershipNumber
-          in: path
+          in: query
           description: Membership Number
           required: true
           schema:
