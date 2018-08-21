@@ -103,19 +103,12 @@ paths:
         '500':
           description: Internal server error.
 
-  /customer/{id}/addMembership:
+  /customer/addMembership:
     post:
       summary: Add a membership to a customer account.
       security:
         - consumerToken: []
         - customerToken: []
-      parameters:
-        - name: id
-          in: path
-          description: Customer ID
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -133,15 +126,15 @@ paths:
         '500':
           description: Internal server error.
       
-  /membership/{id}/validate:
+  /membership/{membershipNumber}/validate:
     post:
       summary: Validate a given membership number
       security:
         - consumerToken: []
       parameters:
-        - name: id
+        - name: membershipNumber
           in: path
-          description: Membership ID
+          description: Membership Number
           required: true
           schema:
             type: string
