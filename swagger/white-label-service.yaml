@@ -81,19 +81,12 @@ paths:
         '500':
           description: Internal server error.
 
-  /customer/{id}:
+  /customer/me:
     get:
-      summary: Get a customer record.
+      summary: Get a customer record given a session token in the header customer token.
       security:
         - consumerToken: []
         - customerToken: []
-      parameters:
-        - name: id
-          in: path
-          description: Customer ID
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: A customer object.
@@ -282,19 +275,25 @@ components:
         email: 
           type: string
           example: 'John@smith.com'
-        membership:
-          $ref: '#/components/schemas/membership'
+        memberships:
+          type: array
+          description: All the memberships attached to the customer.
+          items:
+            $ref: '#/components/schemas/membership'
       required:
         - firstName
         - lastName
         - email
-        - membership
+        - memberships
     membership:
       type: object
       properties:
         number: 
           type: string 
           example: 'ih5743845747'
+        expiry: 
+          format: date-time
+          example: '2017-01-01T12:30:00+00:00'
       required:
         - number
     addMembership:
