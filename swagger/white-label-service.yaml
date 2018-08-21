@@ -222,12 +222,8 @@ components:
         customerAccessToken:
           type: string
           example: 'hsdjsiaj90789043'
-        customerId:
-          type: string
-          example: 'hsdjsiaj90789043'
       required:
         - customerAccessToken
-        - customerId
     passwordReset:
       type: object
       properties:
@@ -248,12 +244,16 @@ components:
         email: 
           type: string
           example: 'John@smith.com'
+        password: 
+          type: string
+          example: '***********'
         membership:
           $ref: '#/components/schemas/membershipCreate'
       required:
         - firstName
         - lastName
         - email
+        - password
         - membership
     membershipCreate:
       type: object
@@ -291,11 +291,20 @@ components:
         number: 
           type: string 
           example: 'ih5743845747'
-        expiry: 
+        name: 
+          type: string
+          example: 'John Smith'
+        expiryDate: 
           format: date-time
           example: '2017-01-01T12:30:00+00:00'
+        benefitsAccess: 
+          format: boolean
+          example: false
       required:
         - number
+        - name
+        - expiryDate
+        - benefitsAccess
     addMembership:
       type: object
       properties:
