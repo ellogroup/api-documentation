@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "31d617c7-4981-4bdb-ad31-7bb92a2ded82",
+		"_postman_id": "aa1187e3-27c3-4b75-8a8d-44447bf9d914",
 		"name": "DCG",
 		"description": "Dining Club Group APIs.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -8,15 +8,12 @@
 	"item": [
 		{
 			"name": "Restaurant API",
-			"description": null,
 			"item": [
 				{
 					"name": "V1",
-					"description": null,
 					"item": [
 						{
 							"name": "Brand",
-							"description": null,
 							"item": [
 								{
 									"name": "List Brands",
@@ -94,7 +91,6 @@
 						},
 						{
 							"name": "Chain",
-							"description": null,
 							"item": [
 								{
 									"name": "List Chains",
@@ -187,7 +183,6 @@
 						},
 						{
 							"name": "Cuisine",
-							"description": null,
 							"item": [
 								{
 									"name": "List Cuisines",
@@ -280,7 +275,6 @@
 						},
 						{
 							"name": "Restaurant",
-							"description": null,
 							"item": [
 								{
 									"name": "List Restaurants",
@@ -416,7 +410,6 @@
 						},
 						{
 							"name": "Offer",
-							"description": null,
 							"item": [
 								{
 									"name": "Get Offer",
@@ -446,6 +439,30 @@
 										"description": "Requires `offerId` variable. Run `Restaurant API -> V1 -> Restaurant -> List Restaurants` to generate."
 									},
 									"response": []
+								},
+								{
+									"name": "List Offers",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"body": {},
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v1/offer",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v1",
+												"offer"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"_postman_isSubFolder": true
@@ -457,11 +474,9 @@
 		},
 		{
 			"name": "Membership API",
-			"description": null,
 			"item": [
 				{
 					"name": "Cancellation Reason",
-					"description": null,
 					"item": [
 						{
 							"name": "List Cancellation Reasons",
@@ -504,7 +519,6 @@
 				},
 				{
 					"name": "Customer",
-					"description": null,
 					"item": [
 						{
 							"name": "Create Customer",
@@ -679,7 +693,6 @@
 				},
 				{
 					"name": "Customer Address",
-					"description": null,
 					"item": [
 						{
 							"name": "Create Address",
@@ -719,7 +732,6 @@
 				},
 				{
 					"name": "Customer Token",
-					"description": null,
 					"item": [
 						{
 							"name": "Create Token",
@@ -800,7 +812,6 @@
 				},
 				{
 					"name": "Membership",
-					"description": null,
 					"item": [
 						{
 							"name": "Update Membership",
@@ -871,7 +882,6 @@
 				},
 				{
 					"name": "Membership Card Usage",
-					"description": null,
 					"item": [
 						{
 							"name": "Create Card Usage",
