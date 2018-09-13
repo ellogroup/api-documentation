@@ -24,9 +24,4 @@ get_version membership-service
 MS_VERSION=`cat membership-service-version.txt`
 wget -O membership-service.yaml "https://app.swaggerhub.com/apiproxy/schema/file/the-dcg/membership-service/${MS_VERSION}/swagger.yaml"
 
-# White Label Service
-get_version white-label-service
-WLS_VERSION=`cat white-label-service-version.txt`
-wget -O white-label-service.yaml "https://app.swaggerhub.com/apiproxy/schema/file/the-dcg/white-label-service/${WLS_VERSION}/swagger.yaml"
-
 cd -
