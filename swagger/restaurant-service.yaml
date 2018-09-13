@@ -2,13 +2,13 @@ swagger: '2.0'
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
-basePath: /the-dcg/restaurant-service/1.8.0
+basePath: /the-dcg/restaurant-service/1.9.0
 schemes:
   - https
 
 info:
   description: Manages restaurants
-  version: "1.8.1"
+  version: "1.9.0"
   title: Restaurant Service
 
 paths:
@@ -55,7 +55,7 @@ paths:
           type: string
         - in: query
           name: aroundLatLng
-          description: Pass an optional lattitude and longitude to search around e.g. "55,-4"
+          description: Pass an optional latitude and longitude to search around e.g. "55,-4"
           required: false
           type: string
         - in: query
@@ -82,6 +82,11 @@ paths:
           required: false
           type: string
         - in: query
+          name: independent
+          description: Optional flag. Set to true to only return independent restaurants, i.e. those with no chain. Set to false to only return restaurants with a chain.
+          required: false
+          type: boolean
+        - in: query
           name: offers[]
           description: Pass an optional array of offer id's to filter by
           required: false
@@ -96,6 +101,11 @@ paths:
           description: Pass an optional ISO 8601 date for looking up restaurants that have been updated or deleted since that date. To ensure that you don't miss any updates, you should pass the value returned in the X-Cache-Updated response header from the previous request.
           required: false
           type: string
+        - in: query
+          name: daysAvailable
+          description: Pass an optional comma seperated list of three-letter day abbreviations eg (mon,tue,wed,thu,fri,sat,sun). This will filter the list to restaurants that have offers which are available on all of the days specified.
+          required: false
+          type: string
       produces:
         - application/json
       responses:
@@ -105,6 +115,9 @@ paths:
             X-Cache-Updated:
               type: string
               description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+            X-Total:
+              type: integer
+              description: The total number of restaurants matching the search criteria, regardless of any `offset` and `limit` constraints.
           schema:
             type: array
             items:
@@ -245,6 +258,35 @@ paths:
               description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
         '503':
           description: Service unavailable
+  /offer:
+    get:
+      security:
+        - ConsumerToken: []
+        - CustomerToken: []
+      tags:
+        - Offer
+      summary: Retrieves a list of offers
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: search results matching criteria
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Offer'
+        '404':
+          description: not found
+          headers:
+            X-Cache-Updated:
+              type: string
+              description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
+        '503':
+          description: Service unavailable
   /offer/{id}:
     get:
       security:
@@ -252,7 +294,7 @@ paths:
         - CustomerToken: []
       tags:
         - Offer
-      summary: Retrieves details of an offer
+      summary: "Retrieves details of an offer. Deprecation warning: the availabilty and maxDiners fields are deprecated as these are restaurant specific pieces of data, the API will return an empty data-set for these properties."
       parameters:
         - in: path
           name: id
@@ -268,7 +310,7 @@ paths:
               type: string
               description: The RFC3339 formatted datetime when the response content was cached (ISO 8601 compatible)
           schema:
-            $ref: '#/definitions/Offer'
+            $ref: '#/definitions/RestaurantOffer'
         '404':
           description: not found
           headers:
@@ -445,6 +487,9 @@ definitions:
       chain:
         type: object
         $ref: '#/definitions/RestaurantChain'
+      independent:
+        type: boolean
+        example: false
       brand:
         type: object
         $ref: '#/definitions/BrandRef'
@@ -464,6 +509,11 @@ definitions:
         type: string
         format: string
         example: "This is a restaurant description"
+      notice:
+        type: string
+        format: string
+        example: "Please Note: Discount not available on bank holidays."
+        description: "optional field which may contain additional information or terms and conditions"
       bookingTelephone:
         type: string
         format: string
@@ -483,7 +533,7 @@ definitions:
       offers:
         type: array
         items:
-          $ref: '#/definitions/Offer'
+          $ref: '#/definitions/RestaurantOffer'
       address:
         type: object
         $ref: '#/definitions/Address'
@@ -539,7 +589,7 @@ definitions:
       offers:
         type: array
         items:
-          $ref: '#/definitions/Offer'
+          $ref: '#/definitions/RestaurantOffer'
       updatedAt:
         type: string
         format: date-time
@@ -613,10 +663,19 @@ definitions:
       lat:
         type: number
         example: 55.865233060606
-      lng:
+      long:
         type: number
         example: -4.2645282926424
   Offer:
+    type: object
+    properties:
+      id:
+        type: string
+        example: asjdfasdf4856
+      name:
+        type: string
+        example: "20% off the total bill, 7 days a week"
+  RestaurantOffer:
     type: object
     properties:
       id:
@@ -672,7 +731,7 @@ definitions:
         example: asjdfasdf4856
       offer:
         type: object
-        $ref: '#/definitions/Offer'
+        $ref: '#/definitions/RestaurantOffer'
       friday:
         type: boolean
         example: true
