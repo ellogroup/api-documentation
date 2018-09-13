@@ -2,7 +2,7 @@ swagger: '2.0'
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
-basePath: /the-dcg/restaurant-service/1.8.2
+basePath: /the-dcg/restaurant-service/1.9.0
 schemes:
   - https
 
