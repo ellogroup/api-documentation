@@ -2,13 +2,13 @@ swagger: '2.0'
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
-basePath: /the-dcg/restaurant-service/1.9.0
+basePath: /the-dcg/restaurant-service/1.10.0
 schemes:
   - https
 
 info:
   description: Manages restaurants
-  version: "1.9.0"
+  version: "1.10.0"
   title: Restaurant Service
 
 paths:
@@ -73,12 +73,22 @@ paths:
           maximum: 1
         - in: query
           name: cuisines[]
-          description: Pass an optional array of cuisine id's to filter by
+          description: Pass an optional array of cuisine id's to filter by. Deprecation warning, the comma separated list of cuisines filter should now be used.
+          required: false
+          type: string
+        - in: query
+          name: cuisines
+          description: Pass an optional comma separated list of cuisine id's to filter by for example "23823ujasljdf82,dfiyKJ8970KJL"
           required: false
           type: string
         - in: query
           name: chains[]
-          description: Pass an optional array of chain id's to filter by
+          description: Pass an optional array of chain id's to filter by. Deprecation warning, the comma separated list of chains filter should now be used.
+          required: false
+          type: string
+        - in: query
+          name: chains
+          description: Pass an optional comma separated list of chain id's to filter by for example "23823ujasljdf82,dfiyKJ8970KJL"
           required: false
           type: string
         - in: query
@@ -88,7 +98,12 @@ paths:
           type: boolean
         - in: query
           name: offers[]
-          description: Pass an optional array of offer id's to filter by
+          description: Pass an optional array of offer id's to filter by. Deprecation warning, the comma separated list of offers filter should now be used.
+          required: false
+          type: string
+        - in: query
+          name: offers
+          description: Pass an optional comma seperated list of offers for example "23823ujasljdf82,dfiyKJ8970KJL"
           required: false
           type: string
         - in: query

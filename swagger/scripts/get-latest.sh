@@ -9,7 +9,7 @@ get_version()
     gron "https://app.swaggerhub.com/apiproxy/schema/file/the-dcg/${API_NAME}" \
     | grep -Eo 'https:\/\/api\.swaggerhub\.com\/apis\/the-dcg\/.*\/([0-9\.]+)' \
     | grep -o '[0-9\.]*$' \
-    | sort \
+    | sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n \
     | tail -1 \
     > ${API_NAME}-version.txt
 }
