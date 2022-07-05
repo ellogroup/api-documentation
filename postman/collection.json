@@ -3,7 +3,8 @@
 		"_postman_id": "d09bc6c4-01b6-c0dd-33dd-6ba1b82e7f33",
 		"name": "DCG",
 		"description": "Dining Club Group APIs.",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43968"
 	},
 	"item": [
 		{
@@ -810,13 +811,14 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"var jsonData = JSON.parse(responseBody);",
 											"postman.setEnvironmentVariable(\"customerId\", jsonData.id);",
 											"postman.setEnvironmentVariable(\"membershipId\", jsonData.memberships[0].id);",
+											"postman.setEnvironmentVariable(\"membershipNumber\", jsonData.memberships[0].number);",
 											""
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -834,7 +836,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"consumerCustomerId\": \"consumerCustomerId-{{$timestamp}}\",\n  \"membership\": {\n    \"expiryDate\": \"2020-11-22T19:28:22+00:00\"\n  }\n}"
+									"raw": "{\n  \"consumerCustomerId\": \"consumerCustomerId-{{$timestamp}}\",\n  \"membership\": {\n    \"expiryDate\": \"2025-11-22T19:28:22+00:00\"\n  }\n}"
 								},
 								"url": {
 									"raw": "{{membershipApiUrl}}/customer",
@@ -1140,7 +1142,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"started\": \"2017-12-17T20:55:36+00:00\",\n  \"expires\": \"2022-12-17T20:55:36+00:00\"\n}"
+									"raw": "{\n  \"started\": \"2017-12-17T20:55:36+00:00\",\n  \"expires\": \"2026-12-17T20:55:36+00:00\"\n}"
 								},
 								"url": {
 									"raw": "{{membershipApiUrl}}/membership/{{membershipId}}",
@@ -1185,6 +1187,46 @@
 									]
 								},
 								"description": "Requires `membershipId` variable. Run `Membership API -> Customer -> Create Customer` to generate."
+							},
+							"response": []
+						},
+						{
+							"name": "List Membership",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Consumer-Token",
+										"value": "{{consumerToken}}"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{membershipApiUrl}}/membership?membershipNumber={{membershipNumber}}&offset=0&limit=10",
+									"host": [
+										"{{membershipApiUrl}}"
+									],
+									"path": [
+										"membership"
+									],
+									"query": [
+										{
+											"key": "membershipNumber",
+											"value": "{{membershipNumber}}"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
 							},
 							"response": []
 						}
