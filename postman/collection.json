@@ -759,6 +759,381 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "V3",
+					"item": [
+						{
+							"name": "Brand",
+							"item": [
+								{
+									"name": "List Brands",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"brandId\", jsonData[0].id);",
+													"}",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/brand",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"brand"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Brand",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/brand/{{brandId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"brand",
+												"{{brandId}}"
+											]
+										},
+										"description": "Requires `brandId` variable. Run `Restaurant API -> V3 -> Brand -> List Brands` to generate."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Chain",
+							"item": [
+								{
+									"name": "List Chains",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"chainId\", jsonData[0].id);",
+													"}",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/chain?offset=0&limit=10",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"chain"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "0"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Chain",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/chain/{{chainId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"chain",
+												"{{chainId}}"
+											]
+										},
+										"description": "Requires `chainId` variable. Run `Restaurant API -> V3 -> Chain -> List Chains` to generate."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Cuisine",
+							"item": [
+								{
+									"name": "List Cuisines",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"cuisineId\", jsonData[0].id);",
+													"}",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/cuisine?offset=0&limit=10",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"cuisine"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "0"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Cuisine",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/cuisine/{{cuisineId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"cuisine",
+												"{{cuisineId}}"
+											]
+										},
+										"description": "Requires `cuisineId` variable. Run `Restaurant API -> V3 -> Cuisine -> List Cuisines` to generate."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Restaurant",
+							"item": [
+								{
+									"name": "List Restaurants",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);",
+													"if (jsonData.length) {",
+													"    postman.setEnvironmentVariable(\"restaurantId\", jsonData[0].id);",
+													"    postman.setEnvironmentVariable(\"offerId\", jsonData[0].offers[0].id);",
+													"}",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											},
+											{
+												"key": "X-Geo-Ip",
+												"value": "156.67.242.53",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/restaurant?offset=0&limit=10&searchString=restaurant&aroundLatLng=53.800755,-1.549077&distance=50",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"restaurant"
+											],
+											"query": [
+												{
+													"key": "offset",
+													"value": "0"
+												},
+												{
+													"key": "limit",
+													"value": "10"
+												},
+												{
+													"key": "searchString",
+													"value": "restaurant"
+												},
+												{
+													"key": "aroundLatLng",
+													"value": "53.800755,-1.549077"
+												},
+												{
+													"key": "distance",
+													"value": "50"
+												},
+												{
+													"key": "geoFromIp",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "cuisines[]",
+													"value": "o7yq0PxLZQE6KQ9p",
+													"disabled": true
+												},
+												{
+													"key": "chains[]",
+													"value": "K0q5noEY5pE8WZyL",
+													"disabled": true
+												},
+												{
+													"key": "offers[]",
+													"value": "Pj3mpRrlyzxv0Bb7",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Restaurant",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/restaurant/{{restaurantId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"restaurant",
+												"{{restaurantId}}"
+											]
+										},
+										"description": "Requires `restaurantId` variable. Run `Restaurant API -> V3 -> Restaurant -> List Restaurants` to generate."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Offer",
+							"item": [
+								{
+									"name": "Get Offer",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Consumer-Token",
+												"value": "{{consumerToken}}"
+											}
+										],
+										"url": {
+											"raw": "{{restaurantApiUrl}}/v3/offer/{{offerId}}",
+											"host": [
+												"{{restaurantApiUrl}}"
+											],
+											"path": [
+												"v3",
+												"offer",
+												"{{offerId}}"
+											]
+										},
+										"description": "Requires `offerId` variable. Run `Restaurant API -> V3 -> Restaurant -> List Restaurants` to generate."
+									},
+									"response": []
+								}
+							]
+						}
+					]
 				}
 			]
 		},
